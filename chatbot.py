@@ -54,7 +54,7 @@ if st.button("گفت و گوی جدید"):
 def get_text():
     col1, col2 = st.columns([5, 1])  
     with col1:
-        input_text = st.text_input("سؤال خود را وارد کنید:", "", key="input")
+        input_text = st.text_input("", "", key="input")
     with col2:
         top_k = st.number_input("top_k", min_value=1, max_value=20, value=5, step=1, label_visibility="collapsed")
     return input_text, top_k
