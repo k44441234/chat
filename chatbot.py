@@ -27,7 +27,7 @@ for context in data:
 
 
 def chat_message(content, is_user=False, key=None):
-    alignment = "text-align: left;" if is_user else "text-align: left;"
+    alignment = "text-align: right;" if is_user else "text-align: right;"
     direction = "direction: rlt;" if is_user else "direction: ltr;"
     background_color = "#cccccc" if is_user else "#1b2331"
     text_color = "color: #000000;"  if is_user else "color: #ffffff;"
@@ -60,7 +60,7 @@ def get_text():
 
 st.markdown(
     """
-    <h1 style='text-align: Left; direction: ltr;'>Book Guyton and Hall Textbook of Medical Physiology chatbot</h1>
+    <h1 style='text-align: Right; direction: rtl;'>چت بات احادیث</h1>
     """, 
     unsafe_allow_html=True
 )
@@ -68,7 +68,7 @@ st.markdown(
 search_text = get_text()
 accuracy = []
 # model = SentenceTransformer("hamtaai/bg3_model", device="cpu")
-model_name = "BAAI/bge-m3 ".strip()
+model_name = "hamtaai/bg3_model".strip()
 model = SentenceTransformer(model_name, device="cpu")
 
 
@@ -106,14 +106,15 @@ client = OpenAI(
 )
 
 def generate_answer(context, query):
-    prompt = f"متن: {context}\nسؤال: {query}"
+    prompt = f"احادیث: {context}\nسؤال: {query}"
     
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
             {
                 "role": "system",
-                "content": """You are a specialized medical assistant trained to help medical students understand complex physiological concepts from the Guyton and Hall Textbook of Medical Physiology."""
+                "content": """شما یک چت بات مختصص احادیث هست
+                لطفا تنها با توجه به احادیث به سوال پاسخ بده"""
             },
             {
                 "role": "user",
@@ -126,12 +127,12 @@ def generate_answer(context, query):
 def rag(query, top_k=3):
     retrieved_docs = final_text(query, top_k)
     # print(len(retrieved_docs))
-    combined_context = "\n\n".join(retrieved_docs)
+    combined_context = "\n حدیث: \n\n".join(retrieved_docs)
     answer = generate_answer(combined_context, query)
     return answer , query, combined_context  
 
 if search_text:
-    with st.spinner("Generating response..."):
+    with st.spinner("Generating response..."):  
         
         bot_response, context, combined_context  = rag(search_text)
         response = bot_response
