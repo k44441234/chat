@@ -18,7 +18,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-with open("D:/Work/AMIN/App/data.json", encoding='utf-8') as f:
+with open("/data.json", encoding='utf-8') as f:
     data = json.load(f)
 
 sentence = []
@@ -97,6 +97,11 @@ def final_text(query, top_k):
     for item in ann[0]:
         final_text.append(sentence[item])
     return final_text
+
+client = OpenAI(
+    api_key="aa-lxZz5kz6oQ8sku7jTqcoFh2oo3rNXeXB6YC4boEOmPONC6Lu",
+    base_url="https://api.avalai.ir/v1"
+)
 
 client = OpenAI(
     api_key=st.secrets["openai_key"],
