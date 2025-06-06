@@ -123,7 +123,7 @@ def generate_answer(context, query):
 
 def rag(query, top_k=3):
     retrieved_docs = final_text(query, top_k)
-    print(len(retrieved_docs))
+    # print(len(retrieved_docs))
     combined_context = "\n\n".join(retrieved_docs)
     answer = generate_answer(combined_context, query)
     return answer , query, combined_context  
