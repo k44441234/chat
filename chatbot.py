@@ -67,7 +67,7 @@ st.markdown(
 
 search_text = get_text()
 accuracy = []
-model = SentenceTransformer("hamtaai/bg3_model")
+model = SentenceTransformer("hamtaai/bg3_model", device="cpu")
 
 embedding_file = "embeddings.npy"
 
