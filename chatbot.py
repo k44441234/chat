@@ -208,13 +208,11 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-
-# پاک کردن چت و ورودی در صورت کلیک روی دکمه
-if st.button("🔁 گفت‌وگوی جدید"):
+س
+if st.button("گفت‌وگوی جدید"):
     st.session_state['generated'] = []
     st.session_state['past'] = []
-    st.session_state['input'] = ""  # پاک کردن ورودی
-    st.experimental_rerun()         # ریفرش صفحه برای اعمال پاک‌سازی
+    st.session_state['input'] = ""
 
 
 
