@@ -20,7 +20,7 @@ st.markdown("""
 
 with open("data.json", encoding='utf-8') as f:
     data = json.load(f)
-s
+
 sentence = []
 for context in data[:10]:
     sentence.append(context["content"])
@@ -98,7 +98,7 @@ def final_text(query, top_k):
 
 client = OpenAI(
     api_key=st.secrets["openai_key"],
-    base_url="https://api.avalai.ir/v1"
+    base_url="https://api.openai.com/v1"
 )
 
 def generate_answer(context, query):
