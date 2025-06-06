@@ -18,9 +18,9 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-with open("/data.json", encoding='utf-8') as f:
+with open("data.json", encoding='utf-8') as f:
     data = json.load(f)
-
+s
 sentence = []
 for context in data[:10]:
     sentence.append(context["content"])
@@ -67,9 +67,7 @@ st.markdown(
 
 search_text = get_text()
 accuracy = []
-device = "cuda" if torch.cuda.is_available() else "cpu"
-# model = SentenceTransformer("BAAI/bge-m3", device=device)
-model = SentenceTransformer("hamtaai/bg3_model", device=device)
+model = SentenceTransformer("hamtaai/bg3_model")
 
 embedding_file = "embeddings.npy"
 
@@ -97,11 +95,6 @@ def final_text(query, top_k):
     for item in ann[0]:
         final_text.append(sentence[item])
     return final_text
-
-client = OpenAI(
-    api_key="aa-lxZz5kz6oQ8sku7jTqcoFh2oo3rNXeXB6YC4boEOmPONC6Lu",
-    base_url="https://api.avalai.ir/v1"
-)
 
 client = OpenAI(
     api_key=st.secrets["openai_key"],
