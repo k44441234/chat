@@ -22,7 +22,7 @@ with open("data.json", encoding='utf-8') as f:
     data = json.load(f)
 
 sentence = []
-for context in data[:10]:
+for context in data:
     sentence.append(context["content"])
 
 
@@ -68,7 +68,7 @@ st.markdown(
 search_text = get_text()
 accuracy = []
 # model = SentenceTransformer("hamtaai/bg3_model", device="cpu")
-model = SentenceTransformer("all-MiniLM-L6-v2", device="cpu")
+model = SentenceTransformer("BAAI/bge-m3 ", device="cpu")
 
 
 embedding_file = "embeddings.npy"
