@@ -47,14 +47,18 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 
 # 🧼 Add Clear Chat button
-if st.button("گفت و گو جدید"):
+if st.button("گفت و گوی جدید"):
     st.session_state['generated'] = []
     st.session_state['past'] = []
-    st.text_input = []
 
 def get_text():
-    input_text = st.text_input("", "", key="input")
-    return input_text
+    col1, col2 = st.columns([5, 1])  
+    with col1:
+        input_text = st.text_input("سؤال خود را وارد کنید:", "", key="input")
+    with col2:
+        top_k = st.number_input("top_k", min_value=1, max_value=20, value=5, step=1, label_visibility="collapsed")
+    return input_text, top_k
+
 
 st.markdown(
     """
@@ -63,14 +67,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-search_text = get_text()
+search_text, top_k = get_text()
 
-# 🔽 گرفتن top_k از کاربر
-top_k = st.number_input("تعداد احادیث بازیابی‌شده:", min_value=1, max_value=20, value=5, step=1)
-
+accuracy = []
 model_name = "hamtaai/bg3_model".strip()
 model = SentenceTransformer(model_name, device="cpu")
-
 
 embedding_file = "embeddings.npy"
 
@@ -128,8 +129,9 @@ def rag(query, top_k=5):
     return answer , query, combined_context  
 
 if search_text:
-    with st.spinner("در حال ایجاد پاسخ..."):  
-        bot_response, context, combined_context = rag(search_text, top_k)
+    with st.spinner("Generating response..."):  
+        bot_response, context, combined_context  = rag(search_text, top_k)
+
         response = bot_response
         st.session_state.past.append(context)
         st.session_state.generated.append(response)
