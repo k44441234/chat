@@ -208,7 +208,7 @@ if 'generated' not in st.session_state:
 if 'past' not in st.session_state:
     st.session_state['past'] = []
 
-س
+
 if st.button("گفت‌وگوی جدید"):
     st.session_state['generated'] = []
     st.session_state['past'] = []
