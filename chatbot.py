@@ -26,7 +26,7 @@ for context in data[:10]:
     sentence.append(context["content"])
 
 
-def message(content, is_user=False, key=None):
+def chat_message(content, is_user=False, key=None):
     alignment = "text-align: left;" if is_user else "text-align: left;"
     direction = "direction: rlt;" if is_user else "direction: ltr;"
     background_color = "#cccccc" if is_user else "#1b2331"
@@ -98,7 +98,7 @@ def final_text(query, top_k):
 
 client = OpenAI(
     api_key=st.secrets["openai_key"],
-    base_url="https://api.openai.com/v1"
+    # base_url="https://api.openai.com/v1"
 )
 
 def generate_answer(context, query):
@@ -139,5 +139,5 @@ if search_text:
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])):
-        # message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
-        message(st.session_state["generated"][i], is_user=False, key=str(i))
+        # chat_message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
+        chat_message(st.session_state["generated"][i], is_user=False, key=str(i))
