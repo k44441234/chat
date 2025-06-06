@@ -8,7 +8,6 @@ import os
 from openai import OpenAI
 from sentence_transformers import SentenceTransformer
 
-
 st.markdown("""
     <style>
     .bot-response {
@@ -25,10 +24,9 @@ sentence = []
 for context in data:
     sentence.append(context["content"])
 
-
 def chat_message(content, is_user=False, key=None):
     alignment = "text-align: right;" if is_user else "text-align: right;"
-    direction = "direction: rlt;" if is_user else "direction: ltr;"
+    direction = "direction: rtl;" if is_user else "direction: rtl;"
     background_color = "#cccccc" if is_user else "#1b2331"
     text_color = "color: #000000;"  if is_user else "color: #ffffff;"
     st.markdown(
@@ -49,10 +47,10 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 
 # 🧼 Add Clear Chat button
-if st.button("New Chat"):
+if st.button("گفت و گوی جدید"):
     st.session_state['generated'] = []
     st.session_state['past'] = []
-
+    st.text_input = []
 
 def get_text():
     input_text = st.text_input("", "", key="input")
@@ -69,7 +67,6 @@ search_text = get_text()
 accuracy = []
 model_name = "hamtaai/bg3_model".strip()
 model = SentenceTransformer(model_name, device="cpu")
-
 
 embedding_file = "embeddings.npy"
 
@@ -100,12 +97,10 @@ def final_text(query, top_k):
 
 client = OpenAI(
     api_key=st.secrets["openai_key"],
-    # base_url="https://api.openai.com/v1"
 )
 
 def generate_answer(context, query):
     prompt = f"احادیث: {context}\nسؤال: {query}"
-    
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
@@ -122,25 +117,21 @@ def generate_answer(context, query):
     )
     return response.choices[0].message.content if response.choices else "No response received."
 
-def rag(query, top_k=3):
+def rag(query, top_k=5):
     retrieved_docs = final_text(query, top_k)
-    # print(len(retrieved_docs))
     combined_context = "\n حدیث: \n\n".join(retrieved_docs)
     answer = generate_answer(combined_context, query)
     return answer , query, combined_context  
 
 if search_text:
     with st.spinner("Generating response..."):  
-        
         bot_response, context, combined_context  = rag(search_text)
         response = bot_response
         st.session_state.past.append(context)
         st.session_state.generated.append(response)
-        # Show the combined context (retrieved paragraphs)
         with st.expander("📄 View retrieved context used for this answer"):
             st.write(combined_context)
 
 if st.session_state['generated']:
     for i in range(len(st.session_state['generated'])):
-        # chat_message(st.session_state['past'][i], is_user=True, key=str(i) + '_user')
         chat_message(st.session_state["generated"][i], is_user=False, key=str(i))
